@@ -12,14 +12,15 @@ from struct import *
 import os
 from subprocess import check_output
 
-adresseIP = check_output(['hostname', '--all-ip-addresses'])
-UDP_IP = adresseIP
+#Recupere l'adresse IP de la machine
+UDP_IP = check_output(['hostname', '--all-ip-addresses'])
 UDP_PORT = 50000  
 sock = socket.socket(socket.AF_INET, # Internet
 socket.SOCK_DGRAM) # UDP
 sock.bind((UDP_IP, UDP_PORT))
 
- 
+
+#Initialisation des variables globales
 z = 0
 zoom = 0
 zPlus = False
@@ -29,13 +30,7 @@ zMoins = False
 def setup():
     size(800, 800, P3D)
     
-    
-def receive(data):
-    if data[36] != 0:
-        print("false")
-
-
-    
+#Creer les cylindres de la figure   
 def cylinder(bottom, top, h, sides):
     pushMatrix()
     translate(0,h/2,0)
@@ -104,11 +99,12 @@ def keyReleased():
             zMoins = False
 '''
     
+#Permet de quitter le programme avec la touche echap
 def keyPressed():
     if key == CODED:
         if keyCode == ESC :
             exit()
-    
+#Permet de zoomer
 def Zoomer():
     data, addr = sock.recvfrom(1024)
     global zoom
@@ -127,6 +123,7 @@ def draw():
     lights()
     fill(255)
     translate(width/2, height/2, zoom)    
+    #recoit les paquets UDP
     data, addr = sock.recvfrom(1024)
     
     #Sans le telephone
@@ -140,6 +137,7 @@ def draw():
         global z
         z -= 200'''
     
+    #transforme les donnees du paquet en float
     yS = "%1.4f" %unpack_from ('!f', data, 36)
     xS = "%1.4f" %unpack_from ('!f', data, 44)
     zS = "%1.4f" %unpack_from ('!f', data, 40)
@@ -151,6 +149,7 @@ def draw():
     listeTouche = [64, 68, 72, 76, 80, 84, 88, 92]
     for i in listeTouche:
         touche = "%1.4f" %unpack_from ('!f', data, i)
+        #verifie si une touche est appuye
         if float(touche) != 0:
             Zoomer()
         else:
@@ -161,8 +160,7 @@ def draw():
             rotateY(radians(y)) 
             rotateZ(radians(z))
     
-    #print "received message: ", "%1.4f" %unpack_from ('!f', data, 0), "%1.4f" %unpack_from ('!f', data, 4), "%1.4f" %unpack_from ('!f', data, 8), "%1.4f" %unpack_from ('!f', data, 12),"%1.4f" %unpack_from ('!f', data, 16), "%1.4f" %unpack_from ('!f', data, 20), "%1.4f" %unpack_from ('!f', data, 24), "%1.4f" %unpack_from ('!f', data, 28),"%1.4f" %unpack_from ('!f', data, 32), "%1.4f" %unpack_from ('!f', data, 36), "%1.4f" %unpack_from ('!f', data, 40), "%1.4f" %unpack_from ('!f', data, 44), "%1.4f" %unpack_from ('!f', data, 48), "%1.4f" %unpack_from ('!f', data, 52), "%1.4f" %unpack_from ('!f', data, 56), "%1.4f" %unpack_from ('!f', data, 60), "%1.4f" %unpack_from ('!f', data, 64), "%1.4f" %unpack_from ('!f', data, 68), "%1.4f" %unpack_from ('!f', data, 72), "%1.4f" %unpack_from ('!f', data, 76), "%1.4f" %unpack_from ('!f', data, 80), "%1.4f" %unpack_from ('!f', data, 84), "%1.4f" %unpack_from ('!f', data, 88), "%1.4f" %unpack_from ('!f', data, 92)
-    
+    #Construit la figure
     largeurmin = 100
     longueurmin = 140
     hauteur = 10
