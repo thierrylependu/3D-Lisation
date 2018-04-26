@@ -9,6 +9,8 @@ Pour l'utiliser : entrer l'adresse IP de l'ordinateur dans la barre IP et 50000 
 Activer Acceleration et Orientation
 Appuyer sur Send Data
 Appuyer sur Toggle Keyboard pour l'utilisation du pavé pour le zoom
+Faire pivoter le téléphone pour faire pivoter l'objet
+Appuyer sur une des cases dupavé tactile puis faire pivoter le téléphone dans le sens horaire ou anti horaire pour effectuer un zoom
 
 
 
